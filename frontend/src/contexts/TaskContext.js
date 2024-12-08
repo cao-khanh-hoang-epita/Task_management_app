@@ -1,41 +1,79 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
+import {
+    fetchTasks,
+    createTask,
+    updateTask,
+    deleteTask,
+    toggleTaskCompletion,
+} from '../api/taskApi';
 
-// Create the context
 const TaskContext = createContext();
 
-// Provide the context
 export const TaskProvider = ({ children }) => {
-    const [tasks, setTasks] = useState([]); // Active tasks
-    const [completedTasks, setCompletedTasks] = useState([]); // Completed tasks
+    const [tasks, setTasks] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const addTask = (task) => {
-        setTasks([...tasks, { ...task, id: Date.now(), isCompleted: false }]);
-    };
+    useEffect(() => {
+        const loadTasks = async () => {
+            try {
+                const data = await fetchTasks();
+                setTasks(data);
+            } catch (error) {
+                console.error('Failed to fetch tasks:', error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+        loadTasks();
+    }, []);
 
-    const deleteTask = (id) => {
-        setTasks(tasks.filter((task) => task.id !== id));
-    };
-
-    const editTask = (updatedTask) => {
-        setTasks(
-            tasks.map((task) =>
-                task.id === updatedTask.id ? updatedTask : task
-            )
-        );
-    };
-
-    const completeTask = (id) => {
-        const taskToComplete = tasks.find((task) => task.id === id);
-        if (taskToComplete) {
-            setTasks(tasks.filter((task) => task.id !== id));
-            setCompletedTasks([...completedTasks, { ...taskToComplete, isCompleted: true }]);
-        }
-    };
+    const completedTasks = tasks.filter((task) => task.isCompleted);
 
     const searchTasks = (query) => {
+        if (!query) return tasks;
         return tasks.filter((task) =>
             task.title.toLowerCase().includes(query.toLowerCase())
         );
+    };
+
+    const addTask = async (taskData) => {
+        try {
+            const newTask = await createTask(taskData);
+            setTasks((prevTasks) => [...prevTasks, newTask]);
+        } catch (error) {
+            console.error('Failed to add task:', error.message);
+        }
+    };
+
+    const editTask = async (taskId, updatedTask) => {
+        try {
+            const updated = await updateTask(taskId, updatedTask);
+            setTasks((prevTasks) =>
+                prevTasks.map((task) => (task._id === taskId ? updated : task))
+            );
+        } catch (error) {
+            console.error('Failed to edit task:', error.message);
+        }
+    };
+
+    const removeTask = async (taskId) => {
+        try {
+            await deleteTask(taskId);
+            setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
+        } catch (error) {
+            console.error('Failed to delete task:', error.message);
+        }
+    };
+
+    const toggleCompletion = async (taskId, isCompleted) => {
+        try {
+            const updated = await toggleTaskCompletion(taskId, isCompleted);
+            setTasks((prevTasks) =>
+                prevTasks.map((task) => (task._id === taskId ? updated : task))
+            );
+        } catch (error) {
+            console.error('Failed to toggle task completion:', error.message);
+        }
     };
 
     return (
@@ -43,11 +81,12 @@ export const TaskProvider = ({ children }) => {
             value={{
                 tasks,
                 completedTasks,
-                addTask,
-                deleteTask,
-                editTask,
-                completeTask,
+                loading,
                 searchTasks,
+                addTask,
+                editTask,
+                removeTask,
+                toggleCompletion,
             }}
         >
             {children}
@@ -55,5 +94,4 @@ export const TaskProvider = ({ children }) => {
     );
 };
 
-// Export the hook for accessing the context
-export const useTaskContext = () => useContext(TaskContext);
+export const useTaskContext = () => React.useContext(TaskContext);

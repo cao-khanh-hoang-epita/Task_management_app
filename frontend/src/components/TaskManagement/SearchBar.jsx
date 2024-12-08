@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { useTaskContext } from '../../contexts/TaskContext';
-import '../../styles/SearchBar.css';
-
 
 const SearchBar = ({ onSearch }) => {
     const [query, setQuery] = useState('');
 
-    const handleSearch = (e) => {
-        setQuery(e.target.value);
-        onSearch(e.target.value);
+    const handleChange = (e) => {
+        const value = e.target.value;
+        setQuery(value);
+        onSearch(value);
     };
 
     return (
@@ -16,7 +14,8 @@ const SearchBar = ({ onSearch }) => {
             type="text"
             placeholder="Search tasks..."
             value={query}
-            onChange={handleSearch}
+            onChange={handleChange}
+            className="search-bar"
         />
     );
 };
