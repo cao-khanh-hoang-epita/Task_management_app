@@ -52,11 +52,7 @@ const TaskPage = () => {
         <div className="task-page">
             <header className="task-header">
                 <h1>Task Management</h1>
-                <button className="logout-btn" onClick={handleLogout}>
-                    Logout
-                </button>
             </header>
-            <SearchBar onSearch={handleSearch} />
             <button
                 className="add-task-btn"
                 onClick={() => {
@@ -80,6 +76,11 @@ const TaskPage = () => {
             />
             <h2>Completed Tasks</h2>
             <CompletedList tasks={completedTasks} />
+            <footer className="task-footer">
+            <button className="logout-btn" onClick={handleLogout}>
+                    Logout
+                </button>
+            </footer>
         </div>
     );
 };

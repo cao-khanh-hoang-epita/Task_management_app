@@ -1,16 +1,11 @@
-.auth-form {
-    width: 300px;
-    margin: 20px auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
 .auth-form input {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
+    margin-bottom: 10px; /* Add margin to space out input fields */
+    width: 100%; /* Make input fields take full width */
+    box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
 }
 
 .auth-form button {
@@ -20,6 +15,9 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    width: 100%; /* Make button take full width */
+    box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+    margin-top: 10px; /* Add margin to space out the button */
 }
 
 .auth-form button:hover {
@@ -29,4 +27,29 @@
 .auth-form .error {
     color: red;
     font-size: 12px;
+    margin-top: 5px; /* Add margin to space out error messages */
+}
+
+.auth-container {
+    text-align: center;
+    padding: 20px; /* Add padding to the container */
+    max-width: 400px; /* Set a max width for the container */
+    margin: 0 auto; /* Center the container */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for better appearance */
+    border-radius: 8px; /* Add border radius for rounded corners */
+    background-color: #f9f9f9; /* Add a background color */
+}
+
+.switch-btn {
+    margin-top: 20px;
+    padding: 10px 20px; /* Add padding to the button */
+    background-color: #28a745; /* Change background color */
+    color: white; /* Change text color */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Add border radius */
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+.switch-btn:hover {
+    background-color: #218838; /* Change hover background color */
 }
