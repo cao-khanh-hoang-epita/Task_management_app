@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/tasks'; // Update with your backend URL
+const API_URL = 'https://task-management-app-mhpk.onrender.com/api/tasks'; // Update with your backend URL
 
 // Get all tasks
 export const fetchTasks = async () => {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/auth'; // Correct backend URL
+const API_URL = 'https://task-management-app-mhpk.onrender.com/api/auth'; // Correct backend URL
 
 export const signup = async (email, password) => {
     console.log('Sending signup request to backend...');
